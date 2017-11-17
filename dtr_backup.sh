@@ -13,12 +13,12 @@ email_function () {
   echo "example body" > /tmp/email_body.txt
   mail -s "example subject" $EMAIL_RECIPIENTS /tmp/email_body.txt
 }
-email_function srini
+#email_function srini
 if [ ! -z "$REPLICA_ID" ];then
   docker run -i --rm docker/dtr:$DTR_VERSION backup \
      --ucp-url $UCP_URL --ucp-insecure-tls \
      --ucp-username $UCP_USERNAME --ucp-password $UCP_PASSWORD \
-     --existing-replica-id $REPLICA_ID > /tmp/$HOSTNAME-dtr-backup-$TODAY.tar
+     --existing-replica-id $REPLICA_ID > /tmp/srini-docker/$HOSTNAME-dtr-backup-$TODAY.tar
   exit_status=$?
   if [ $exit_status -ne 0 ]; then
     echo "Exist status $exit_status is not equal to 0"
