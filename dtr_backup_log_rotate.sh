@@ -1,4 +1,7 @@
 #!/bin/sh
+##########################################################################################
+########This script takes dtr backup and rotates dtr-backup tar files ####################
+##########################################################################################
 DTR_VERSION=2.4.0
 UCP_URL=https://54.175.154.26:443
 UCP_USERNAME=admin
@@ -26,7 +29,6 @@ while getopts ":c:d:" opt; do
        dtr_backup_dir=$OPTARG
        ;;
     *)
-      echo "invalid option"
       usage
        ;;
   esac
@@ -61,7 +63,7 @@ if [ ! -z "$REPLICA_ID" ];then
   docker run -i --rm docker/dtr:$DTR_VERSION backup \
      --ucp-url $UCP_URL --ucp-insecure-tls \
      --ucp-username $UCP_USERNAME --ucp-password $UCP_PASSWORD \
-     --xxxexisting-replica-id $REPLICA_ID > /tmp/srini-docker/$HOSTNAME-dtr-backup-$TODAY.tar 2> error_output_file
+     --existing-replica-id $REPLICA_ID > $dtr_backup_dir/$HOSTNAME-dtr-backup-$TODAY.tar 2> $dtr_backup_dir/dtr_backup_output_file
   exit_status=$?
   if [ $exit_status -ne 0 ]; then
     EMAIL_SUBJECT="Exist status $exit_status is not equal to 0 from the backup script"
@@ -71,4 +73,3 @@ if [ ! -z "$REPLICA_ID" ];then
 else
   EMAIL_SUBJECT="REPLICA_ID not found"
 fi
-
